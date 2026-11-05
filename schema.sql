@@ -15,7 +15,7 @@ CREATE TABLE feedback (
     descricao TEXT NOT NULL,
     data_hora TIMESTAMP NOT NULL DEFAULT now(),
     status VARCHAR(30) NOT NULL CONSTRAINT ck_status_feedback CHECK (status IN (
-                                                                    'registrado','revisado','arquivad')),
+                                                                    'registrado','revisado','arquivado')),
     id_emissor INT NOT NULL CONSTRAINT fk_feedback_emissor REFERENCES usuario(id_usuario),
     id_receptor INT NOT NULL CONSTRAINT fk_feedback_receptor REFERENCES usuario(id_usuario),
 
