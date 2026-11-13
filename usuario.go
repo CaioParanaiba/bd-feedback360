@@ -46,3 +46,31 @@ func listarUsuarios(db *sql.DB) ([]Usuario, error) {
 
 	return lista, nil
 }
+
+func buscarUsuario(db *sql.DB, id int64) (Usuario, error) {
+	var u Usuario
+	err := db.QueryRow("SELECT id_usuario, nome, tipo_usuario FROM usuario WHERE id_usuario = $1", id).Scan(&u.ID, &u.Nome, &u.TipoUsuario)
+	if err != nil {
+		return Usuario{}, fmt.Errorf("buscar usuario %d: %w", id, err)
+	}
+
+	return u, nil
+}
+
+func editarUsuario(db *sql.DB, u Usuario) error {
+	_, err := db.Exec("UPDATE usuario SET nome = $1, tipo_usuario = $2 WHERE id_usuario = $3", u.Nome, u.TipoUsuario, u.ID)
+	if err != nil {
+		return fmt.Errorf("atualizar usuario %d: %w", u.ID, err)
+	}
+
+	return nil
+}
+
+func excluirUsuario(db *sql.DB, id int64) error {
+	_, err := db.Exec("DELETE FROM usuario WHERE id_usuario = $1", id)
+	if err != nil {
+		return fmt.Errorf("deletar id %d: %w", id, err)
+	}
+
+	return nil
+}
